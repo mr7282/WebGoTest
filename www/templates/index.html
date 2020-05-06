@@ -1,0 +1,35 @@
+{{define "Blog"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{.Name}}</title>
+    {{template "head"}}
+</head>
+<body>
+    <nav class="menu">
+        <div class="elem"><a href="/">МОЙ БЛОГ</a></div>
+        <div class="elem"><a href="/find">ПОИСК</a></div>
+        <div class="elem"><a href="/create">СОЗДАТЬ ПОСТ</a></div>
+        <div class="disable elem"><a href="#">РЕДАКТИРОВАТЬ</a></div>
+    </nav>
+    <h1>{{.Name}}</h1>
+
+    <div id="posts">
+        {{range .Blog}}
+        <div class="post">
+            <div class="id">Номер поста: {{.ID}}</div>
+            <div class="name">{{.Name}}</div>
+            <div class="body">{{.Body}}</div>
+        </div>
+        {{end}}
+    </div>
+</body>
+</html>
+{{end}}
+
+{{define "head"}}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css" />
+
+{{end}}
