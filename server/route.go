@@ -10,5 +10,7 @@ func Router(route *http.ServeMux) {
 	route.HandleFunc("/", viewBlog)
 	route.HandleFunc("/find", viewFind)
 	route.HandleFunc("/find/post", responseFind)
+	route.HandleFunc("/create", createPostHTML)
+	route.HandleFunc("/create/post", createPost)
 }
 

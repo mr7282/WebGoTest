@@ -55,3 +55,37 @@ func responseFind(wr http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 	}
 }
+
+func createPostHTML(wr http.ResponseWriter, r *http.Request) {
+	var tmpl = template.Must(template.New("myFind").ParseFiles("./www/templates/create.html"))
+	if err := tmpl.ExecuteTemplate(wr, "Blog", myBlog); err != nil {
+		log.Println(err)
+	}
+}
+
+func createPost(wr http.ResponseWriter, r *http.Request) {
+	reqJSON, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		log.Println(err)
+	}
+	type respStruct struct{
+		NamePost string
+		TextPost string
+	}
+
+	myRespStruct := respStruct{}
+
+	if err := json.Unmarshal(reqJSON, &myRespStruct); err != nil {
+		log.Println(err)
+	}
+	NewPost := models.Post{
+		ID: len(myBlog.Blog)+1,
+		Name: myRespStruct.NamePost,
+		Body: myRespStruct.TextPost,
+
+	}
+	myBlog.Blog = append(myBlog.Blog, NewPost)
+
+	fmt.Println(myRespStruct)
+	fmt.Println(myBlog)
+}

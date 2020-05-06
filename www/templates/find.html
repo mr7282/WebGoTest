@@ -8,15 +8,15 @@
 <body>
     <nav class="menu">
         <div class="elem"><a href="/">МОЙ БЛОГ</a></div>
-        <div class="elem"><a href="localhost:8080/find">ПОИСК</a></div>
-        <div class="elem"><a href="localhost:8080/create">СОЗДАТЬ ПОСТ</a></div>
-        <div class="elem"><a href="localhost:8080/edit">РЕДАКТИРОВАТЬ</a></div>
+        <div class="elem"><a href="/find">ПОИСК</a></div>
+        <div class="elem"><a href="/create">СОЗДАТЬ ПОСТ</a></div>
+        <div class="elem"><a href="/edit">РЕДАКТИРОВАТЬ</a></div>
     </nav>
 
     <form onsubmit="postFindReqest()">
         <div class="findString"> НАЙТИ ПОСТ:
             <input type="text" id="findString" name="Find" placeholder="Введите номер поста">
-            <a href="http://localhost:8080/find"><button type="submit">Найти</button></a>
+           <button type="submit">Найти</button>
         </div>
     </form>
 
@@ -28,7 +28,6 @@
 
     <script>
         function postFindReqest() {
-            let postsDiv = document.getElementById('posts')
             let findString = document.getElementById('findString').value;
             fetch("/find/post", {
                 method: 'POST',
