@@ -3,7 +3,7 @@ package server
 import (
 	"net/http"
 
-	log "github.com/sirupsen/logrus"
+	"log"
 )
 
 type Server struct {

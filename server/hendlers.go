@@ -89,3 +89,23 @@ func createPost(wr http.ResponseWriter, r *http.Request) {
 	fmt.Println(myRespStruct)
 	fmt.Println(myBlog)
 }
+
+func editPostView(wr http.ResponseWriter, r *http.Request) {
+	var tmpl = template.Must(template.New("myEdit").ParseFiles("./www/templates/edit.html"))
+	if err := tmpl.ExecuteTemplate(wr, "Blog", myBlog); err != nil {
+		log.Println(err)
+	}
+}
+
+
+func editPost(wr http.ResponseWriter, r *http.Request) {
+	respJSON, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		log.Println(err)
+	}
+
+	if err := json.Unmarshal()
+
+
+
+}
