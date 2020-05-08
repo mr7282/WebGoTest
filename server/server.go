@@ -21,13 +21,7 @@ func StartServer() {
 	log.Fatal(http.ListenAndServe(":8080", route))
 }
 
-// func NewServer() *Server {
-// 	return &Server{
-// 		RootDir: "homework-3",
-// 		TemplateDir: "www/templates",
-// 		IndexTemplate: "./index.html"
-// 	}
-// }
+
 
 
 

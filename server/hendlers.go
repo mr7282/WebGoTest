@@ -68,12 +68,8 @@ func createPost(wr http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 	}
-	type respStruct struct{
-		NamePost string
-		TextPost string
-	}
 
-	myRespStruct := respStruct{}
+	myRespStruct := models.RespStruct{}
 
 	if err := json.Unmarshal(reqJSON, &myRespStruct); err != nil {
 		log.Println(err)
@@ -104,8 +100,19 @@ func editPost(wr http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 	}
 
-	if err := json.Unmarshal()
+	respUnMarsh := models.RespStruct{}
 
+	if err := json.Unmarshal(respJSON, &respUnMarsh); err != nil {
+		log.Println(err)
+	}
 
+	NewPostEdit := models.Post{
+		ID: myBlog.Find.ID,
+		Name: respUnMarsh.NamePost,
+		Body: respUnMarsh.TextPost,
+	}
 
+	myBlog.Blog[myBlog.Find.ID - 1].Name = NewPostEdit.Name
+	myBlog.Blog[myBlog.Find.ID - 1].Body = NewPostEdit.Body
+	myBlog.Find = models.Post{0, "", ""}
 }

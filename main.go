@@ -2,6 +2,8 @@ package main
 
 import(
 	"homework-3/server"
+	"os"
+	"os/signal"
 )
 
 
@@ -15,7 +17,12 @@ import(
 
 
 func main() {
-	server.StartServer()
+	go func ()  {
+		server.StartServer()
+	}()
+	stopSig := make(chan os.Signal)
+	signal.Notify(stopSig, os.Interrupt, os.Kill)
+	<-stopSig
 }
 
 

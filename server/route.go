@@ -13,6 +13,6 @@ func Router(route *http.ServeMux) {
 	route.HandleFunc("/create", createPostHTML)
 	route.HandleFunc("/create/post", createPost)
 	route.HandleFunc("/edit", editPostView)
-	// route.HandleFunc("/edit/post", editPost)
+	route.HandleFunc("/edit/post", editPost)
 }
 
