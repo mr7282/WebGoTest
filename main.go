@@ -4,23 +4,38 @@ import(
 	"homework-3/server"
 	"os"
 	"os/signal"
-	
+	"database/sql"
+	"github.com/sirupsen/logrus"
+	// "fmt"
+	// "time"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
-
-// 1. Создайте роут и шаблон для отображения всех постов в блоге.
-// 2. Создайте роут и шаблон для просмотра конкретного поста в блоге.
-// 3. Создайте роут и шаблон для редактирования и создания материала.
-// 4. * Добавьте к роуту редактирования и создания материала работу с Markdown с помощью пакета blackfriday.
-// Рекомендуем хранить контент поста в блоге в типе template.HTML, чтобы использовать html-разметку внутри поста (для blackfriday это обязательное условие корректного отображения материала).
-
-
+// NewLogger - Создаёт новый логгер
+func NewLogger() *logrus.Logger {
+	lg := logrus.New()
+	lg.SetReportCaller(false)
+	lg.SetFormatter(&logrus.TextFormatter{})
+	lg.SetLevel(logrus.DebugLevel)
+	return lg
+}
 
 
 func main() {
+	lg:= NewLogger()
+
+	db,err := sql.Open("mysql","root:1240608@tcp(88.210.21.76:3360)/myBlog?parseTime=true")
+	if err != nil {
+		lg.WithError(err).Fatal("can`t connect to DataBase")
+	}
+	defer db.Close()
+
+	serv := server.NewServer(db, lg)
 	go func ()  {
-		server.StartServer()
+		serv.StartServer()
 	}()
+
 	stopSig := make(chan os.Signal)
 	signal.Notify(stopSig, os.Interrupt, os.Kill)
 	<-stopSig
