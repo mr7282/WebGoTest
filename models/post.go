@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"time"
 	"database/sql"
 )
@@ -37,5 +38,20 @@ func ShowAll(db *sql.DB) (PostsSlice, error) {
 	return res, err
 }
 
+// FindPost - searching for the necessary post
+func FindPost(db *sql.DB, fr int) (Post, error) {
+	res := Post{}
+	rows, err := db.Query("SELECT ID, Name, post,Created_at FROM posts WHERE ID = ?", fr)
+	if err != nil {
+		return res, err
+	}
 
-// fmt.Println(res)
+	for rows.Next() {
+		err := rows.Scan(&res.ID, &res.Name, &res.Post, &res.CreatedAt)
+		if err != nil {
+			return res, err
+		}
+		fmt.Println(res)
+	}
+	return res, err
+}

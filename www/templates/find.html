@@ -1,4 +1,4 @@
-{{define "Blog"}}
+{{define "Find"}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +7,7 @@
 </head>
 <body>
     <nav class="menu">
-        <div class="elem"><a href="/">МОЙ БЛОГ</a></div>
+        <div class="elem"><a href="/index">МОЙ БЛОГ</a></div>
         <div class="elem"><a href="/find">ПОИСК</a></div>
         <div class="elem"><a href="/create">СОЗДАТЬ ПОСТ</a></div>
         <div class="elem"><a href="/edit">РЕДАКТИРОВАТЬ</a></div>
@@ -23,11 +23,14 @@
     <div class="post">
         <div class="id">Номер поста: {{.Find.ID}}</div>
         <div class="name">{{.Find.Name}}</div>
-        <div class="body">{{.Find.Body}}</div>
+        <div class="body">{{.Find.Post}}</div>
     </div>
 
     <script>
         function postFindReqest() {
+            setTimeout(() => {
+                document.location.reload(true)
+            }, 5); 
             let findString = document.getElementById('findString').value;
             fetch("/find/post", {
                 method: 'POST',

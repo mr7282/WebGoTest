@@ -2,13 +2,13 @@ package server
 
 import (
 	// "fmt"
-	// "encoding/json"
+	"encoding/json"
 	"homework-3/models"
 	"html/template"
-	// "io/ioutil"
+	"io/ioutil"
 	"log"
 	"net/http"
-	// "strconv"
+	"strconv"
 )
 
 // var myBlog = models.BlogPage{
@@ -19,6 +19,9 @@ import (
 // 		models.Post{3, "Мой третий пост", "В шаблон можно встроить общие функции. Например, на сайтах в конце страницы часто указывают копирайт, и в этой строке — текущий год. Создадим функцию, которая будет возвращать в шаблон текущий год."},
 // 	},
 // }
+
+
+var myFindPage = &models.BlogPage{}
 
 func (serv *Server) viewBlog(wr http.ResponseWriter, r *http.Request) {
 	var tmpl = template.Must(template.New("myBlog").ParseFiles("./www/templates/index.html"))
@@ -32,37 +35,40 @@ func (serv *Server) viewBlog(wr http.ResponseWriter, r *http.Request) {
 		serv.lg.WithError(err).Println("can't show all posts")
 	}
 
-	serv.lg.Info(myBlog)
+	// serv.lg.Info(myBlog, "   \nviewBlog")
 
 	if err := tmpl.ExecuteTemplate(wr, "Blog", myBlogPage); err != nil {
 		log.Println(err)
 	}
 }
 
-/* func viewFind(wr http.ResponseWriter, r *http.Request) {
+func viewFind(wr http.ResponseWriter, r *http.Request) {
 	var tmpl = template.Must(template.New("myFind").ParseFiles("./www/templates/find.html"))
-	if err := tmpl.ExecuteTemplate(wr, "Blog", myBlog); err != nil {
+	myFindPage.Name = "Поиск"
+	if err := tmpl.ExecuteTemplate(wr, "Find", myFindPage); err != nil {
 		log.Println(err)
 	}
-} */
+}
 
-// func responseFind(wr http.ResponseWriter, r *http.Request) {
-// 	var tmpl = template.Must(template.New("myFind").ParseFiles("./www/templates/find.html"))
-// 	reqJSON, err := ioutil.ReadAll(r.Body)
-// 	if err != nil {
-// 		log.Println(err)
-// 	}
-// 	findRequest := ""
-// 	if err := json.Unmarshal(reqJSON, &findRequest); err != nil {
-// 		log.Println(err)
-// 	}
-// 	fr, _ := strconv.Atoi(findRequest)
-// 	myBlog.Find = myBlog.Blog[fr-1]
-// 	fmt.Println(myBlog.Find)
-// 	if err := tmpl.ExecuteTemplate(wr, "Blog", myBlog); err != nil {
-// 		log.Println(err)
-// 	}
-// }
+func (serv *Server) responseFind(wr http.ResponseWriter, r *http.Request) {
+	// var tmpl = template.Must(template.New("myFind").ParseFiles("./www/templates/find.html"))
+	reqJSON, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		log.Println(err)
+	}
+	findRequest := ""
+	if err := json.Unmarshal(reqJSON, &findRequest); err != nil {
+		log.Println(err)
+	}
+	fr, _ := strconv.Atoi(findRequest)
+	myFindPage.Find, err = models.FindPost(serv.db, fr)
+	if err != nil {
+		serv.lg.WithError(err).Info("Проблемы с SELECT запросом")
+	}
+	// if err := tmpl.ExecuteTemplate(wr, "Find", myFindPage); err != nil {
+	// 	log.Println(err)
+	// }
+}
 
 /* func createPostHTML(wr http.ResponseWriter, r *http.Request) {
 	var tmpl = template.Must(template.New("myFind").ParseFiles("./www/templates/create.html"))
