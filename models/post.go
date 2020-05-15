@@ -55,3 +55,19 @@ func FindPost(db *sql.DB, fr int) (Post, error) {
 	}
 	return res, err
 }
+
+// CreatePost - insert new post in myBlog
+func (p *Post) CreatePost(db *sql.DB) error {
+	_, err := db.Exec("INSERT INTO posts (Name, post) VALUES (?, ?)",
+	p.Name,p.Post,
+	)
+	return err
+}
+
+// EditPost - edit an existing post on myBloge
+func (p *Post) EditPost(db *sql.DB, findID *Post) error {
+	_, err := db.Exec("UPDATE posts SET Name = ?, post = ? WHERE ID = ?",
+	p.Name, p.Post, findID.ID,
+	)
+	return err
+}

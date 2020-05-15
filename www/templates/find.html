@@ -13,7 +13,7 @@
         <div class="elem"><a href="/edit">РЕДАКТИРОВАТЬ</a></div>
     </nav>
 
-    <form onsubmit="postFindReqest()">
+    <form onsubmit="call()">
         <div class="findString"> НАЙТИ ПОСТ:
             <input type="text" id="findString" name="Find" placeholder="Введите номер поста">
            <button type="submit">Найти</button>
@@ -27,19 +27,23 @@
     </div>
 
     <script>
+        function call() {
+        setTimeout(() => {
+            document.location.reload()
+        }, 5);
+        postFindReqest()
+
         function postFindReqest() {
-            setTimeout(() => {
-                document.location.reload(true)
-            }, 5); 
             let findString = document.getElementById('findString').value;
             fetch("/find/post", {
-                method: 'POST',
+                method: "POST",
                 headers: {
                     'Content-Type': 'application/json; charset=utf-8'
                 },
                 body: JSON.stringify(findString)
             });
         };
+    };
     </script>
 </body>
 </html>
