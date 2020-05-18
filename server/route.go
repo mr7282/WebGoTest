@@ -13,7 +13,6 @@ func (serv *Server) Router(route *http.ServeMux) {
 	route.HandleFunc("/find/post", serv.responseFind)
 	route.HandleFunc("/create", serv.createPostHTML)
 	route.HandleFunc("/create/post", serv.createPost)
-	// route.HandleFunc("/edit", editPostView)
-	// route.HandleFunc("/edit/post", editPost)
+	route.HandleFunc("/edit", serv.editPostView)
+	route.HandleFunc("/edit/post", serv.editPost)
 }
-

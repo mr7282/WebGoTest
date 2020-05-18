@@ -1,7 +1,6 @@
 package server
 
 import (
-	// "fmt"
 	"encoding/json"
 	"homework-3/models"
 	"html/template"
@@ -10,16 +9,6 @@ import (
 	"net/http"
 	"strconv"
 )
-
-// var myBlog = models.BlogPage{
-// 	Name: "Мой Блог",
-// 	Blog: []models.Post{
-// 		models.Post{1, "Мой первый пост", "Далее создадим глобальную переменную, опишем в ней простой лист, подготовим переменную, в которую будет считываться шаблон при запуске приложения, и создадим роутер, который будет отдавать нам страницу со списком."},
-// 		models.Post{2, "Мой второй пост", "{{year}} — вызов функций шаблона происходит по названию, без указания точки перед ее именем. Функции необходимо добавлять к структуре *Template перед тем, как производить чтение шаблона. "},
-// 		models.Post{3, "Мой третий пост", "В шаблон можно встроить общие функции. Например, на сайтах в конце страницы часто указывают копирайт, и в этой строке — текущий год. Создадим функцию, которая будет возвращать в шаблон текущий год."},
-// 	},
-// }
-
 
 var myFindPage = &models.BlogPage{}
 
@@ -96,32 +85,34 @@ func (serv *Server) createPost(wr http.ResponseWriter, r *http.Request) {
 
 }
 
-/* func editPostView(wr http.ResponseWriter, r *http.Request) {
+func (serv *Server) editPostView(wr http.ResponseWriter, r *http.Request) {
 	var tmpl = template.Must(template.New("myEdit").ParseFiles("./www/templates/edit.html"))
-	if err := tmpl.ExecuteTemplate(wr, "Blog", myBlog); err != nil {
+	myFindPage.Name = "Редактирование"
+	serv.lg.Info(myFindPage.Find)
+	if err := tmpl.ExecuteTemplate(wr, "Blog", myFindPage); err != nil {
 		log.Println(err)
 	}
-} */
+}
 
-// func editPost(wr http.ResponseWriter, r *http.Request) {
-// 	respJSON, err := ioutil.ReadAll(r.Body)
-// 	if err != nil {
-// 		log.Println(err)
-// 	}
+func (serv *Server) editPost(wr http.ResponseWriter, r *http.Request) {
+	respJSON, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		log.Println(err)
+	}
 
-// 	respUnMarsh := models.RespStruct{}
+	respUnMarsh := models.RespStruct{}
 
-// 	if err := json.Unmarshal(respJSON, &respUnMarsh); err != nil {
-// 		log.Println(err)
-// 	}
+	if err := json.Unmarshal(respJSON, &respUnMarsh); err != nil {
+		log.Println(err)
+	}
 
-// 	NewPostEdit := models.Post{
-// 		ID: myBlog.Find.ID,
-// 		Name: respUnMarsh.NamePost,
-// 		Body: respUnMarsh.TextPost,
-// 	}
+	NewPostEdit := models.Post{
+		ID: myFindPage.Find.ID,
+		Name: respUnMarsh.NamePost,
+		Post: respUnMarsh.TextPost,
+	}
 
-// 	myBlog.Blog[myBlog.Find.ID - 1].Name = NewPostEdit.Name
-// 	myBlog.Blog[myBlog.Find.ID - 1].Body = NewPostEdit.Body
-// 	myBlog.Find = models.Post{0, "", ""}
-// }
+	if err = NewPostEdit.EditPost(serv.db); err != nil {
+		serv.lg.WithError(err).Warning("can't update your post!")
+	}
+}

@@ -65,9 +65,9 @@ func (p *Post) CreatePost(db *sql.DB) error {
 }
 
 // EditPost - edit an existing post on myBloge
-func (p *Post) EditPost(db *sql.DB, findID *Post) error {
+func (p *Post) EditPost(db *sql.DB) error {
 	_, err := db.Exec("UPDATE posts SET Name = ?, post = ? WHERE ID = ?",
-	p.Name, p.Post, findID.ID,
+	p.Name, p.Post, p.ID,
 	)
 	return err
 }
